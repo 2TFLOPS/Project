@@ -16,7 +16,7 @@
 		If LCase(strEXT) = "csv" Then
 			WScript.Echo strFile
 			objXLS.Workbooks(1).Worksheets.Add.Name = strName
-			SetCSV objXLS.Workbooks(1).Worksheets(strName), strFile
+			CSVSheet objXLS.Workbooks(1).Worksheets(strName), strFile
 		End If
 	Next
 
@@ -35,7 +35,7 @@
 	Set objXLS = Nothing
 
 'CSVファイルをシートに読み込む
-Sub SetCSV(destWs, strFile)
+Sub CSVSheet(desWs, strFile)
 
 	Dim sobjXLS, wrkBook, wrkSheet, strUSE
 	
@@ -45,7 +45,7 @@ Sub SetCSV(destWs, strFile)
 	If Not (wrkBook Is Nothing) Then
 		Set wrkSheet = wrkBook.Worksheets(1)
 		strUSE = wrkSheet.UsedRange.Address
-		destWs.Range(strUSE).Value = wrkSheet.Range(strUSE).Value
+		desWs.Range(strUSE).Value = wrkSheet.Range(strUSE).Value
 		wrkBook.Saved = True
 		wrkBook.Close
 	End If
