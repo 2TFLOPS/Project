@@ -4,18 +4,18 @@
 	strPath = "E:\TEMP\"
 	
 	Set objFSO = CreateObject("Scripting.FileSystemObject")
-	Set strDir = objFSO.GetFolder(strPath)
+	Set strDir = objFSO.GetFolder(strPath) 'フォルダオブジェクト
  
 	Set objXLS = CreateObject("Excel.Application")
 	objXLS.Workbooks.Add
  
-	'CSVがあるだけ処理する
+	'CSVがあるだけ処理
 	For Each strFile In strDir.Files
-		strName = objFSO.GetBaseName(strFile)
-		strEXT = objFSO.GetExtensionName(strFile)
-		If LCase(strEXT) = "csv" Then
+		strName = objFSO.GetBaseName(strFile)		'ファイル名を取得
+		strEXT = objFSO.GetExtensionName(strFile)	'拡張子名を取得
+		If LCase(strEXT) = "csv" Then	'拡張子を大文字→小文字がcsvなら
 			WScript.Echo strFile
-			objXLS.Workbooks(1).Worksheets.Add.Name = strName
+			objXLS.Workbooks(1).Worksheets.Add.Name = strName 'ファイル名のシート名
 			CSVSheet objXLS.Workbooks(1).Worksheets(strName), strFile
 		End If
 	Next
@@ -40,12 +40,12 @@ Sub CSVSheet(desWS, strFile)
 	Dim sobjXLS, wrkBook, wrkSheet, strUSE
 	
 	Set sobjXLS = CreateObject("Excel.Application")
-	Set wrkBook = sobjXLS.Workbooks.Open(strFile, False, True, 2)
+	Set wrkBook = sobjXLS.Workbooks.Open(strFile, False, True, 2) '2=区切り文字(,)
 	
 	If Not (wrkBook Is Nothing) Then
 		Set wrkSheet = wrkBook.Worksheets(1)
-		strUSE = wrkSheet.UsedRange.Address
-		desWS.Range(strUSE).Value = wrkSheet.Range(strUSE).Value
+		strUSE = wrkSheet.UsedRange.Address			 '使用したセル範囲を取得
+		desWS.Range(strUSE).Value = wrkSheet.Range(strUSE).Value 'そのセル範囲の値を取得
 		wrkBook.Saved = True
 		wrkBook.Close
 	End If
